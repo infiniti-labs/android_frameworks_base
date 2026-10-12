@@ -165,7 +165,9 @@ public class PropImitationHooks {
         sNetflixModel = res.getString(R.string.config_netflixSpoofModel);
 
         sProcessName = processName;
-        sIsGms = packageName.equals(PACKAGE_GMS) && processName.equals(PROCESS_GMS_UNSTABLE);
+        sIsGms = packageName.equals(PACKAGE_GMS)
+                && (processName.equals(PACKAGE_GMS)
+                        || processName.equals(PROCESS_GMS_UNSTABLE));
         sIsFinsky = packageName.equals(PACKAGE_FINSKY);
         sIsPhotos = packageName.equals(PACKAGE_GPHOTOS);
 
