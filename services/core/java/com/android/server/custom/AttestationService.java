@@ -64,7 +64,9 @@ public final class AttestationService extends SystemService {
 
     @Override
     public void onBootPhase(int phase) {
-        if (!sDisableGmsProps && CustomUtils.isPackageInstalled(mContext, "com.google.android.gms")
+        if (mContext.getResources().getBoolean(com.android.internal.R.bool.config_enablePif)
+                && !sDisableGmsProps
+                && CustomUtils.isPackageInstalled(mContext, "com.google.android.gms")
                 && phase == PHASE_BOOT_COMPLETED) {
             Log.i(TAG, "Scheduling the service");
             mScheduler.scheduleAtFixedRate(

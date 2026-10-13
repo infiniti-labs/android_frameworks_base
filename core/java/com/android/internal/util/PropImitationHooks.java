@@ -62,6 +62,9 @@ public class PropImitationHooks {
     private static final String TAG = "PropImitationHooks";
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
 
+    private static final boolean sEnablePif =
+            Resources.getSystem().getBoolean(R.bool.config_enablePif);
+
     private static final Boolean sDisableGmsProps = SystemProperties.getBoolean(
             "persist.sys.pihooks.disable.gms_props", false);
 
@@ -223,6 +226,11 @@ public class PropImitationHooks {
     }
 
     private static void setPlayIntegrityProps(Context context) {
+        if (!sEnablePif) {
+            dlog("Play Integrity hooks are disabled by device configuration");
+            return;
+        }
+
         if (sDisableGmsProps) {
             dlog("GMS prop imitation is disabled by user");
             return;
@@ -333,7 +341,7 @@ public class PropImitationHooks {
     }
 
     public static boolean shouldBypassTaskPermission(Context context) {
-        if (sDisableGmsProps) {
+        if (!sEnablePif || sDisableGmsProps) {
             return false;
         }
 
@@ -357,6 +365,11 @@ public class PropImitationHooks {
     }
 
     public static void onEngineGetCertificateChain() {
+        if (!sEnablePif) {
+            dlog("Play Integrity hooks are disabled by device configuration");
+            return;
+        }
+
         if (sDisableKeyAttestationBlock) {
             dlog("Key attestation blocking is disabled by user");
             return;
